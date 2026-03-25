@@ -1,0 +1,6 @@
+# Bỏ qua các thư mục chứa thư viện
+node_modules/
+
+# Bỏ qua các file môi trường chứa API Key
+.env
+tarot-backend/.env

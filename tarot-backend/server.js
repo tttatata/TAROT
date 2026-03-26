@@ -41,10 +41,15 @@ app.post('/api/tarot-reading', async (req, res) => {
     const text = response.text();
 
     // Trả kết quả về cho Frontend
-    res.json({ reading: text });
+    res.json({ reading: text });const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    
   } catch (error) {
-    console.error('Lỗi khi gọi Gemini API:', error.message || error);
-    res.status(500).json({ error: 'Đã xảy ra lỗi khi kết nối với AI.', details: error.message });
+    console.error('Lỗi khi gọi Gemini API:', error); // Log toàn bộ đối tượng lỗi để debug
+    // Đảm bảo chi tiết lỗi luôn là một chuỗi
+    res.status(500).json({
+      error: 'Đã xảy ra lỗi khi kết nối với AI.',
+      details: error.message ? error.message : JSON.stringify(error) // Gửi message hoặc stringify toàn bộ lỗi
+    });
   }
 });
 

@@ -202,7 +202,7 @@ Hãy định dạng bằng Markdown cho dễ nhìn, sử dụng tiêu đề ph�
       setReading(data.reading);
     } catch (error) {
       console.error("Lỗi:", error.message);
-      setReading(`🚨 Lỗi kết nối AI: ${error.message}\n(Hãy kiểm tra lại cửa sổ Terminal đang chạy Node.js Backend để xem chi tiết)`);
+      setReading(`🚨 Lỗi kết nối AI: ${error.message}\nChi tiết: ${error.details || 'Không có chi tiết lỗi từ AI.'}\n(Hãy kiểm tra lại cửa sổ Terminal đang chạy Node.js Backend để xem chi tiết)`);
     } finally {
       setIsReadingLoading(false);
     }

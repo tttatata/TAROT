@@ -80,7 +80,7 @@ export default function App() {
       let shuffled = [...FULL_TAROT_DECK];
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], initial[i]];
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
       const newDeck = shuffled.map(card => ({
         ...card,
@@ -202,6 +202,7 @@ Hãy định dạng bằng Markdown cho dễ nhìn, sử dụng tiêu đề ph�
       setReading(data.reading);
     } catch (error) {
       console.error("Lỗi:", error.message);
+      setReading(`🚨 Lỗi kết nối AI: ${error.message}\n(Hãy kiểm tra lại cửa sổ Terminal đang chạy Node.js Backend để xem chi tiết)`);
       setReading(`🚨 Lỗi kết nối AI: ${error.message}\nChi tiết: ${error.details || 'Không có chi tiết lỗi từ AI.'}\n(Hãy kiểm tra lại cửa sổ Terminal đang chạy Node.js Backend để xem chi tiết)`);
     } finally {
       setIsReadingLoading(false);

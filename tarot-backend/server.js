@@ -22,8 +22,9 @@ if (!process.env.GEMINI_API_KEY) {
 // Khởi tạo Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Lấy model cụ thể mà bạn muốn sử dụng
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // Sử dụng tên model chuẩn
+const model = genAI.getGenerativeModel({ model: 'gemini-pro' }); // Sử dụng model gemini-pro để kiểm tra khả năng kết nối
 
+// Endpoint xử lý việc luận giải bài Tarot
 app.post('/api/tarot-reading', async (req, res) => {
   const { prompt } = req.body;
 
@@ -32,26 +33,17 @@ app.post('/api/tarot-reading', async (req, res) => {
   }
 
   try {
-    console.log("--- Đang kết nối Gemini API ---");
-    
-    // Đảm bảo dùng model name chuẩn nhất
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    console.log("Đang gọi Gemini API...");
+    // Gửi prompt đến model đã được khởi tạo
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text(); // Đảm bảo lấy được text sạch
+    const response = result.response;
+    const text = response.text();
 
-    console.log("--- Phản hồi thành công ---");
+    // Trả kết quả về cho Frontend
     res.json({ reading: text });
-
   } catch (error) {
-    // In lỗi chi tiết ra Terminal của VS Code/Cmd để bạn kiểm tra
-    console.error('LỖI CHI TIẾT TỪ GOOGLE:', error);
-
-    res.status(500).json({ 
-      error: 'Lỗi server khi gọi AI.', 
-      details: error.message 
-    });
+    console.error('Lỗi khi gọi Gemini API:', error.message || error);
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi kết nối với AI.', details: error.message });
   }
 });
 

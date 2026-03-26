@@ -22,7 +22,29 @@ if (!process.env.GEMINI_API_KEY) {
 // Khởi tạo Gemini client (Truyền tường minh apiKey vào)
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// Endpoint xử lý việc luận giải bài Tarot
+// // Endpoint xử lý việc luận giải bài Tarot
+// app.post('/api/tarot-reading', async (req, res) => {
+//   const { prompt } = req.body;
+
+//   if (!prompt) {
+//     return res.status(400).json({ error: 'Thiếu dữ liệu prompt' });
+//   }
+
+//   try {
+//     console.log("Đang gọi Gemini API...");
+//     // Sử dụng model gemini-1.5-flash theo yêu cầu
+//     const response = await ai.models.generateContent({
+//       model: 'gemini-1.5-flash',
+//       contents: prompt,
+//     });
+
+//     // Trả kết quả về cho Frontend
+//     res.json({ reading: response.text });
+//   } catch (error) {
+//     console.error('Lỗi khi gọi Gemini API:', error.message || error);
+//     res.status(500).json({ error: 'Đã xảy ra lỗi khi kết nối với AI.', details: error.message });
+//   }
+// });
 app.post('/api/tarot-reading', async (req, res) => {
   const { prompt } = req.body;
 
@@ -32,20 +54,27 @@ app.post('/api/tarot-reading', async (req, res) => {
 
   try {
     console.log("Đang gọi Gemini API...");
-    // Sử dụng model gemini-1.5-flash theo yêu cầu
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: prompt,
-    });
+
+    // Cấu hình Model chính xác
+    // Thử dùng 'gemini-1.5-flash' (bản ổn định nhất hiện tại)
+    const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // Gọi hàm generateContent từ đối tượng model
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
     // Trả kết quả về cho Frontend
-    res.json({ reading: response.text });
+    res.json({ reading: text });
+    
   } catch (error) {
-    console.error('Lỗi khi gọi Gemini API:', error.message || error);
-    res.status(500).json({ error: 'Đã xảy ra lỗi khi kết nối với AI.', details: error.message });
+    console.error('Lỗi khi gọi Gemini API:', error);
+    res.status(500).json({ 
+      error: 'Đã xảy ra lỗi khi kết nối với AI.', 
+      details: error.message 
+    });
   }
 });
-
 app.listen(port, () => {
   console.log(`🔮 Tarot Backend đang chạy tại http://localhost:${port}`);
 });

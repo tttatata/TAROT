@@ -33,6 +33,7 @@ app.post('/api/tarot-reading', async (req, res) => {
   }
 
   try {
+    console.log(`Đang gọi Gemini API với model: ${model.model} ...`);
     console.log("Đang gọi Gemini API...");
     // Gửi prompt đến model đã được khởi tạo
     const result = await model.generateContent(prompt);

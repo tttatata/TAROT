@@ -21,8 +21,8 @@ if (!process.env.GEMINI_API_KEY) {
 
 // Khởi tạo Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-// Lấy model cụ thể mà bạn muốn sử dụng
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' }); // Tạm thời chuyển sang gemini-pro vì gemini-1.5-flash không tìm thấy
+// Lấy model cụ thể mà bạn muốn sử dụng (đã chuyển sang gemini-1.5-flash)
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Endpoint xử lý việc luận giải bài Tarot
 app.post('/api/tarot-reading', async (req, res) => {
@@ -41,8 +41,7 @@ app.post('/api/tarot-reading', async (req, res) => {
     const text = response.text();
 
     // Trả kết quả về cho Frontend
-    res.json({ reading: text });const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    
+    res.json({ reading: text });
   } catch (error) {
     console.error('Lỗi khi gọi Gemini API:', error); // Log toàn bộ đối tượng lỗi để debug
     // Đảm bảo chi tiết lỗi luôn là một chuỗi

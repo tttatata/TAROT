@@ -187,7 +187,7 @@ Hãy viết một đoạn luận giải chi tiết, sâu sắc, tập trung vào
 Hãy định dạng bằng Markdown cho dễ nhìn, sử dụng tiêu đề phụ cho từng cặp và phần tổng quan.`;
 
     try {
-      const response = await fetch('http://localhost:5000/api/tarot-reading', {
+      const response = await fetch('/api/tarot-reading', { // Đổi sang đường dẫn tương đối
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: prompt })

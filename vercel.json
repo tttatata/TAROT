@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "tarot-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "outputDirectory": "dist"
+      }
+    },
+    {
+      "src": "tarot-backend/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "tarot-backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "tarot-frontend/$1"
+    }
+  ]
+}

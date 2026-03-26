@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 
 // CẤU HÌNH THƯ MỤC BỘ BÀI (Thay đổi biến này để đổi bộ bài khác)
-// Yêu cầu: Đặt toàn bộ 78 ảnh (.png) và 1 ảnh 'backside.png' vào thư mục src/assets/card
-const DECK_FOLDER = '/src/assets/card';
+// Yêu cầu: Đặt toàn bộ 78 ảnh (.png) và 1 ảnh 'backside.png' vào thư mục public/card
+const DECK_FOLDER = '/card';
 const CARD_BACK = `${DECK_FOLDER}/backside.png`;
 
 // 1. Khai báo 22 lá Major Arcana (Bộ Ẩn Chính)

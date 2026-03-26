@@ -128,19 +128,6 @@ body {
   font-style: italic;
 }
 
-.chat-input-container {
-  display: flex;
-  gap: 10px;
-  margin-top: 1.5rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.chat-input-container .question-input {
-  margin-bottom: 0;
-  width: 70%;
-}
-
 /* --- Deck Fan Section --- */
 .deck-container {
   width: 100%;
@@ -371,18 +358,4 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.3s ease;
-}
-
-.reading-content.model {
-  background-color: #e0f7fa; /* Light blue for AI messages */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.reading-content.user {
-  background-color: #f3e5f5; /* Light purple for user messages */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
 }

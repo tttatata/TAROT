@@ -22,39 +22,25 @@ if (!process.env.GEMINI_API_KEY) {
 // Khởi tạo Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Lấy model cụ thể mà bạn muốn sử dụng
-const model = genAI.getGenerativeModel({ model: 'gemini-3-flash' }); // Sử dụng gemini-1.5-flash
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Endpoint xử lý việc luận giải bài Tarot
 app.post('/api/tarot-reading', async (req, res) => {
-  const { history } = req.body; // Nhận toàn bộ lịch sử trò chuyện
+  const { prompt } = req.body;
 
-  if (!history || !Array.isArray(history) || history.length === 0) {
-    return res.status(400).json({ error: 'Thiếu lịch sử trò chuyện hợp lệ.' });
+  if (!prompt) {
+    return res.status(400).json({ error: 'Thiếu dữ liệu prompt' });
   }
 
   try {
     console.log(`Đang gọi Gemini API với model: ${model.model} ...`);
-    console.log("Lịch sử trò chuyện gửi đi:", history);
 
-    // Sử dụng generateContentStream để nhận phản hồi theo từng phần
-    const result = await model.generateContentStream({
-      contents: history,
-    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    // Thiết lập header để gửi dữ liệu dạng stream
-    res.writeHead(200, {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Transfer-Encoding': 'chunked',
-      'Connection': 'keep-alive'
-    });
-
-    // Đọc và gửi từng chunk của phản hồi
-    for await (const chunk of result.stream) {
-      const chunkText = chunk.text();
-      res.write(chunkText); // Gửi từng phần văn bản
-    }
-
-    res.end(); // Kết thúc phản hồi stream
+    // Trả kết quả về cho Frontend
+    res.json({ reading: text });
   } catch (error) {
     console.error('Lỗi khi gọi Gemini API:', error); // Log toàn bộ đối tượng lỗi để debug
     // Đảm bảo chi tiết lỗi luôn là một chuỗi

@@ -32,9 +32,9 @@ app.post('/api/tarot-reading', async (req, res) => {
 
   try {
     console.log("Đang gọi Gemini API...");
-    // Sử dụng model gemini-2.5-flash (model mặc định tối ưu nhất hiện nay)
+    // Sử dụng model gemini-1.5-flash theo yêu cầu
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       contents: prompt,
     });
 

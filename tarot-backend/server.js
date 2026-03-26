@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai'; // Đổi tên import cho đúng với thư viện hiện đại
 
 // Đọc các biến môi trường từ file .env
 dotenv.config();
@@ -19,8 +19,10 @@ if (!process.env.GEMINI_API_KEY) {
   console.warn("⚠️ CẢNH BÁO: Chưa tìm thấy biến môi trường GEMINI_API_KEY trong file .env!");
 }
 
-// Khởi tạo Gemini client (Truyền tường minh apiKey vào)
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Khởi tạo Gemini client
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// Lấy model cụ thể mà bạn muốn sử dụng
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
 // Endpoint xử lý việc luận giải bài Tarot
 app.post('/api/tarot-reading', async (req, res) => {
@@ -32,14 +34,13 @@ app.post('/api/tarot-reading', async (req, res) => {
 
   try {
     console.log("Đang gọi Gemini API...");
-    // Sử dụng model gemini-1.5-flash theo yêu cầu
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash-latest', // Đổi sang tên model chính xác hơn
-      contents: prompt,
-    });
+    // Gửi prompt đến model đã được khởi tạo
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
     // Trả kết quả về cho Frontend
-    res.json({ reading: response.text });
+    res.json({ reading: text });
   } catch (error) {
     console.error('Lỗi khi gọi Gemini API:', error.message || error);
     res.status(500).json({ error: 'Đã xảy ra lỗi khi kết nối với AI.', details: error.message });

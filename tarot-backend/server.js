@@ -22,7 +22,7 @@ if (!process.env.GEMINI_API_KEY) {
 // Khởi tạo Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // Lấy model cụ thể mà bạn muốn sử dụng
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // Sử dụng tên model chuẩn
 
 // Endpoint xử lý việc luận giải bài Tarot
 app.post('/api/tarot-reading', async (req, res) => {
